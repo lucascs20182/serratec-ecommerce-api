@@ -10,9 +10,9 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>org.serratec</groupId>
-	<artifactId>viroumemeapi</artifactId>
+	<artifactId>ecommerceapi</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>viroumemeapi</name>
+	<name>ecommerceapi</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
