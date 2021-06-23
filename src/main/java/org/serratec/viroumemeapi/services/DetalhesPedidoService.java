@@ -1,5 +1,6 @@
 package org.serratec.viroumemeapi.services;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +17,6 @@ import org.serratec.viroumemeapi.exceptions.ProductStockLessThanRequestedExcepti
 import org.serratec.viroumemeapi.exceptions.QuantityCannotBeZeroException;
 import org.serratec.viroumemeapi.mappers.DetalhesPedidoMapper;
 import org.serratec.viroumemeapi.repositories.DetalhesPedidoRepository;
-import org.serratec.viroumemeapi.repositories.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -66,6 +66,7 @@ public class DetalhesPedidoService {
 			throw new ItemNotFoundException("Componentes de Pedido finalizado não podem ser alterados.");
 		}
 
+		// verifica se já existe produto cadastrado no pedido
 		Set<Long> idsDosProdutosNoPedido = new HashSet<Long>();
 
 		if (pedido.getProdutosDoPedido() != null) {
@@ -91,10 +92,30 @@ public class DetalhesPedidoService {
 			}
 		}
 
-		detalhesPedidoRepository.save(entity);
+		entity = detalhesPedidoRepository.save(entity);
+		
+		
+//		--------------- // atualiza pedido // ---------------
+		List<DetalhesPedidoEntity> itemDoPedido = pedido.getProdutosDoPedido();
+		itemDoPedido.add(entity);
+		
+		pedido.setProdutosDoPedido(itemDoPedido);
 
-		// recalcula valorTotal e dataEntrega
-		pedidoService.update(entity.getPedido().getId());
+		Double valorTotal = 0.0;
+
+		// recalcula valorTotal
+		for (DetalhesPedidoEntity detalhesPedido : itemDoPedido) {
+			valorTotal += detalhesPedido.getPreco() * detalhesPedido.getQuantidade();
+		}
+		
+		pedido.setValorTotal(valorTotal);
+		
+		pedido.setDataQuePedidoFoiFeito(LocalDate.now());
+		pedido.setDataEntrega(LocalDate.now().plusDays(15));
+		
+		pedidoService.update(pedido.getId(), pedido);
+		
+//		--------------- // fim atualiza pedido // ---------------
 
 		return entity;
 	}
@@ -102,6 +123,8 @@ public class DetalhesPedidoService {
 	public DetalhesPedidoEntity update(Long id, DetalhesPedidoDTORequest dto) throws ItemNotFoundException {
 
 		DetalhesPedidoEntity entity = this.getById(id);
+		
+		PedidoEntity pedido = pedidoService.getById(entity.getPedido().getId());
 
 		if (entity.getPedido().getStatus() != StatusPedido.NAO_FINALIZADO) {
 			throw new ItemNotFoundException("Componentes de Pedido finalizado não podem ser alterados.");
@@ -116,8 +139,25 @@ public class DetalhesPedidoService {
 		}
 
 		detalhesPedidoRepository.save(entity);
+		
+		
+//		--------------- // atualiza pedido // ---------------
+		Double valorTotal = 0.0;
 
-		pedidoService.update(entity.getPedido().getId());
+		// recalcula valorTotal
+		for (DetalhesPedidoEntity detalhesPedido : pedido.getProdutosDoPedido()) {
+			valorTotal += detalhesPedido.getPreco() * detalhesPedido.getQuantidade();
+		}
+		
+		pedido.setValorTotal(valorTotal);
+		
+		pedido.setDataQuePedidoFoiFeito(LocalDate.now());
+		pedido.setDataEntrega(LocalDate.now().plusDays(15));
+		
+		pedidoService.update(pedido.getId(), pedido);
+		
+//		--------------- // fim atualiza pedido // ---------------
+
 
 		return entity;
 	}

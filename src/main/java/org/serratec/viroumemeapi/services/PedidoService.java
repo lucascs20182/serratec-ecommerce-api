@@ -145,12 +145,18 @@ public class PedidoService {
 		return pedidoRepository.save(entity);
 	}
 
-	public PedidoEntity update(Long id) throws ItemNotFoundException {
+	public PedidoEntity update(Long id, PedidoEntity pedidoEditado) throws ItemNotFoundException {
+		
 		PedidoEntity entity = this.getById(id);
 
 		if (entity.getStatus() != StatusPedido.NAO_FINALIZADO) {
 			throw new ItemNotFoundException("Pedido finalizado não pode ser alterado.");
 		}
+		
+		entity.setDataEntrega(pedidoEditado.getDataEntrega());
+		entity.setDataQuePedidoFoiFeito(pedidoEditado.getDataQuePedidoFoiFeito());
+		entity.setProdutosDoPedido(pedidoEditado.getProdutosDoPedido());
+		entity.setValorTotal(pedidoEditado.getValorTotal());
 
 		// preenche pedidosDoProduto no ProdutoEntity
 		for (DetalhesPedidoEntity detalhesPedido : entity.getProdutosDoPedido()) {
@@ -163,20 +169,6 @@ public class PedidoService {
 
 			produto.setPedidosDoProduto(pedidosComEsseProduto);
 		}
-
-		Double valorTotal = 0.0;
-
-		// calcula o valorTotal
-		for (DetalhesPedidoEntity detalhesPedido : entity.getProdutosDoPedido()) {
-			valorTotal += detalhesPedido.getPreco() * detalhesPedido.getQuantidade();
-		}
-		
-		System.out.println(valorTotal);
-
-		entity.setValorTotal(valorTotal);
-
-		entity.setDataQuePedidoFoiFeito(LocalDate.now());
-		entity.setDataEntrega(LocalDate.now().plusDays(15));
 
 		return pedidoRepository.save(entity);
 	}
