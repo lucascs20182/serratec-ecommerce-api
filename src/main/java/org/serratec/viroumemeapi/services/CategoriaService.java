@@ -1,16 +1,21 @@
 package org.serratec.viroumemeapi.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.serratec.viroumemeapi.dtos.CategoriaDTORequest;
+import org.serratec.viroumemeapi.dtos.ProdutoDTOResponse;
 import org.serratec.viroumemeapi.entities.CategoriaEntity;
+import org.serratec.viroumemeapi.entities.ProdutoEntity;
 import org.serratec.viroumemeapi.exceptions.CategoryReferencedByProductException;
 import org.serratec.viroumemeapi.exceptions.ItemNotFoundException;
 import org.serratec.viroumemeapi.mappers.CategoriaMapper;
+import org.serratec.viroumemeapi.mappers.ProdutoMapper;
 import org.serratec.viroumemeapi.repositories.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CategoriaService {
@@ -20,10 +25,27 @@ public class CategoriaService {
 
 	@Autowired
 	CategoriaMapper categoriaMapper;
+	
+	@Autowired
+	ProdutoMapper produtoMapper;
 
 	public List<CategoriaEntity> getAll() {
 		return categoriaRepository.findAll();
 	}
+	
+	@Transactional
+	public List<ProdutoDTOResponse> getCategoryProducts(Long id) throws ItemNotFoundException {
+		CategoriaEntity category = this.getById(id);
+		
+		List<ProdutoDTOResponse> listaProdutosResponse = new ArrayList<ProdutoDTOResponse>();
+
+		for (ProdutoEntity produto : category.getProdutosDaCategoria()) {
+			listaProdutosResponse.add(produtoMapper.toDto(produto));
+		}
+		
+		return listaProdutosResponse;
+	}
+	
 
 	public CategoriaEntity getById(Long id) throws ItemNotFoundException {
 		Optional<CategoriaEntity> categoria = categoriaRepository.findById(id);

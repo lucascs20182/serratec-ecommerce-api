@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.serratec.viroumemeapi.dtos.CategoriaDTORequest;
 import org.serratec.viroumemeapi.dtos.CategoriaDTOResponse;
+import org.serratec.viroumemeapi.dtos.ProdutoDTOResponse;
 import org.serratec.viroumemeapi.entities.CategoriaEntity;
 import org.serratec.viroumemeapi.exceptions.CategoryReferencedByProductException;
 import org.serratec.viroumemeapi.exceptions.ItemNotFoundException;
@@ -44,12 +45,20 @@ public class CategoriaController {
 		return new ResponseEntity<List<CategoriaDTOResponse>>(listaCategoriasResponse, HttpStatus.OK);
 	}
 
-//	@GetMapping("/{id}")
-//	public ResponseEntity<CategoriaDTOResponse> getById(@PathVariable Long id) throws ItemNotFoundException {
-//		CategoriaDTOResponse categoriaResponse = mapper.toDto(service.getById(id));
-//
-//		return new ResponseEntity<CategoriaDTOResponse>(categoriaResponse, HttpStatus.OK);
-//	}
+	@GetMapping("/{id}/produtos")
+	public ResponseEntity<List<ProdutoDTOResponse>> getCategoryProducts(@PathVariable Long id)
+			throws ItemNotFoundException {
+		List<ProdutoDTOResponse> listaProdutos = service.getCategoryProducts(id);
+
+		return new ResponseEntity<List<ProdutoDTOResponse>>(listaProdutos, HttpStatus.OK);
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<CategoriaDTOResponse> getById(@PathVariable Long id) throws ItemNotFoundException {
+		CategoriaDTOResponse categoriaResponse = mapper.toDto(service.getById(id));
+
+		return new ResponseEntity<CategoriaDTOResponse>(categoriaResponse, HttpStatus.OK);
+	}
 
 	@GetMapping("busca")
 	public ResponseEntity<CategoriaDTOResponse> getByName(@RequestParam String nome) throws ItemNotFoundException {
