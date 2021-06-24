@@ -54,12 +54,12 @@ public class ProdutoController {
 		return new ResponseEntity<List<ProdutoDTOResponse>>(listaProdutosResponse, HttpStatus.OK);
 	}
 
-//	@GetMapping("/{id}")
-//	public ResponseEntity<ProdutoDTOResponse> getById(@PathVariable Long id) throws ItemNotFoundException {
-//		ProdutoDTOResponse produtoResponse = mapper.toDto(service.getById(id));
-//
-//		return new ResponseEntity<ProdutoDTOResponse>(produtoResponse, HttpStatus.OK);
-//	}
+	@GetMapping("/{id}")
+	public ResponseEntity<ProdutoDTOResponse> getById(@PathVariable Long id) throws ItemNotFoundException {
+		ProdutoDTOResponse produtoResponse = mapper.toDto(service.getById(id));
+
+		return new ResponseEntity<ProdutoDTOResponse>(produtoResponse, HttpStatus.OK);
+	}
 
 	@GetMapping("busca")
 	public ResponseEntity<ProdutoDTOResponse> getByName(@RequestParam String nome) throws ItemNotFoundException {
