@@ -25,27 +25,26 @@ public class CategoriaService {
 
 	@Autowired
 	CategoriaMapper categoriaMapper;
-	
+
 	@Autowired
 	ProdutoMapper produtoMapper;
 
 	public List<CategoriaEntity> getAll() {
 		return categoriaRepository.findAll();
 	}
-	
+
 	@Transactional
 	public List<ProdutoDTOResponse> getCategoryProducts(Long id) throws ItemNotFoundException {
 		CategoriaEntity category = this.getById(id);
-		
+
 		List<ProdutoDTOResponse> listaProdutosResponse = new ArrayList<ProdutoDTOResponse>();
 
 		for (ProdutoEntity produto : category.getProdutosDaCategoria()) {
 			listaProdutosResponse.add(produtoMapper.toDto(produto));
 		}
-		
+
 		return listaProdutosResponse;
 	}
-	
 
 	public CategoriaEntity getById(Long id) throws ItemNotFoundException {
 		Optional<CategoriaEntity> categoria = categoriaRepository.findById(id);

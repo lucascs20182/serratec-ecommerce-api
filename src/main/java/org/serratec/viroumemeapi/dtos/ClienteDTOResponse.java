@@ -22,7 +22,7 @@ public class ClienteDTOResponse {
 	private List<Long> idsDosEnderecosDoCliente;
 
 	private List<Long> idsDosPedidosDoCliente;
-	
+
 	private Long pedidoAtivo;
 
 	public Long getId() {

@@ -20,7 +20,7 @@ public class DetalhesPedidoMapper {
 
 	@Autowired
 	ProdutoService produtoService;
-	
+
 	@Autowired
 	ClienteService clienteService;
 
@@ -30,7 +30,7 @@ public class DetalhesPedidoMapper {
 	public DetalhesPedidoEntity toEntity(DetalhesPedidoDTORequest dto)
 			throws ItemNotFoundException, ProductStockLessThanRequestedException, QuantityCannotBeZeroException {
 		DetalhesPedidoEntity entity = new DetalhesPedidoEntity();
-		
+
 		ClienteEntity cliente = clienteService.getById(dto.getIdDoClienteLogado());
 
 		/*

@@ -146,13 +146,13 @@ public class PedidoService {
 	}
 
 	public PedidoEntity update(Long id, PedidoEntity pedidoEditado) throws ItemNotFoundException {
-		
+
 		PedidoEntity entity = this.getById(id);
 
 		if (entity.getStatus() != StatusPedido.NAO_FINALIZADO) {
 			throw new ItemNotFoundException("Pedido finalizado não pode ser alterado.");
 		}
-		
+
 		entity.setDataEntrega(pedidoEditado.getDataEntrega());
 		entity.setDataQuePedidoFoiFeito(pedidoEditado.getDataQuePedidoFoiFeito());
 		entity.setProdutosDoPedido(pedidoEditado.getProdutosDoPedido());

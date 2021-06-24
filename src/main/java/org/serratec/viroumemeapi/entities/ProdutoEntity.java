@@ -25,6 +25,8 @@ public class ProdutoEntity {
 
 	private String nome;
 
+	private String autor;
+
 	@Lob
 	private String descricao;
 
@@ -60,6 +62,14 @@ public class ProdutoEntity {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public String getAutor() {
+		return autor;
+	}
+
+	public void setAutor(String autor) {
+		this.autor = autor;
 	}
 
 	public String getDescricao() {

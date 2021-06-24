@@ -25,6 +25,7 @@ public class ProdutoMapper {
 		}
 
 		entity.setNome(dto.getNome());
+		entity.setAutor(dto.getAutor());
 		entity.setDescricao(dto.getDescricao());
 		entity.setPreco(dto.getPreco());
 		entity.setQuantidadeEmEstoque(dto.getQuantidadeEmEstoque());
@@ -37,6 +38,7 @@ public class ProdutoMapper {
 
 		dto.setId(entity.getId());
 		dto.setNome(entity.getNome());
+		dto.setAutor(entity.getAutor());
 		dto.setDescricao(entity.getDescricao());
 		dto.setPreco(entity.getPreco());
 		dto.setQuantidadeEmEstoque(entity.getQuantidadeEmEstoque());

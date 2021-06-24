@@ -27,8 +27,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	JWTUtil jwtUtil;
 
-	private static final String[] AUTH_WHITLIST = { "/swagger-ui/**", "/create", "/cliente", "/categoria/**", "/produto/**",
-			"/v3/api-docs/**" };
+	private static final String[] AUTH_WHITLIST = { "/swagger-ui/**", "/create", "/cliente", "/categoria/**",
+			"/produto/**", "/v3/api-docs/**" };
 
 	private static final String[] AUTH_WHITLIST2 = { "/pedido/**" };
 

@@ -8,6 +8,8 @@ public class ProdutoDTOResponse {
 
 	private String nome;
 
+	private String autor;
+
 	private String descricao;
 
 	private Double preco;
@@ -42,6 +44,14 @@ public class ProdutoDTOResponse {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public String getAutor() {
+		return autor;
+	}
+
+	public void setAutor(String autor) {
+		this.autor = autor;
 	}
 
 	public String getDescricao() {

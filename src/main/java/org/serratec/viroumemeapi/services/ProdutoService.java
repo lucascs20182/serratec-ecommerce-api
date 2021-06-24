@@ -90,6 +90,10 @@ public class ProdutoService {
 			entity.setNome(dto.getNome());
 		}
 
+		if (dto.getAutor() != null) {
+			entity.setAutor(dto.getAutor());
+		}
+
 		if (dto.getDescricao() != null) {
 			entity.setDescricao(dto.getDescricao());
 		}

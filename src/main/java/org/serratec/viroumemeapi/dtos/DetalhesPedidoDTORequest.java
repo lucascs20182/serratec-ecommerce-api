@@ -1,7 +1,5 @@
 package org.serratec.viroumemeapi.dtos;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-
 public class DetalhesPedidoDTORequest {
 
 	// tanto faz passar idDoClienteLogado ou idPedido na criação/editação de detalhe

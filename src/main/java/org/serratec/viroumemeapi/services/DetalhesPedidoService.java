@@ -93,12 +93,11 @@ public class DetalhesPedidoService {
 		}
 
 		entity = detalhesPedidoRepository.save(entity);
-		
-		
+
 //		--------------- // atualiza pedido // ---------------
 		List<DetalhesPedidoEntity> itemDoPedido = pedido.getProdutosDoPedido();
 		itemDoPedido.add(entity);
-		
+
 		pedido.setProdutosDoPedido(itemDoPedido);
 
 		Double valorTotal = 0.0;
@@ -107,14 +106,14 @@ public class DetalhesPedidoService {
 		for (DetalhesPedidoEntity detalhesPedido : itemDoPedido) {
 			valorTotal += detalhesPedido.getPreco() * detalhesPedido.getQuantidade();
 		}
-		
+
 		pedido.setValorTotal(valorTotal);
-		
+
 		pedido.setDataQuePedidoFoiFeito(LocalDate.now());
 		pedido.setDataEntrega(LocalDate.now().plusDays(15));
-		
+
 		pedidoService.update(pedido.getId(), pedido);
-		
+
 //		--------------- // fim atualiza pedido // ---------------
 
 		return entity;
@@ -123,7 +122,7 @@ public class DetalhesPedidoService {
 	public DetalhesPedidoEntity update(Long id, DetalhesPedidoDTORequest dto) throws ItemNotFoundException {
 
 		DetalhesPedidoEntity entity = this.getById(id);
-		
+
 		PedidoEntity pedido = pedidoService.getById(entity.getPedido().getId());
 
 		if (entity.getPedido().getStatus() != StatusPedido.NAO_FINALIZADO) {
@@ -139,8 +138,7 @@ public class DetalhesPedidoService {
 		}
 
 		detalhesPedidoRepository.save(entity);
-		
-		
+
 //		--------------- // atualiza pedido // ---------------
 		Double valorTotal = 0.0;
 
@@ -148,16 +146,15 @@ public class DetalhesPedidoService {
 		for (DetalhesPedidoEntity detalhesPedido : pedido.getProdutosDoPedido()) {
 			valorTotal += detalhesPedido.getPreco() * detalhesPedido.getQuantidade();
 		}
-		
+
 		pedido.setValorTotal(valorTotal);
-		
+
 		pedido.setDataQuePedidoFoiFeito(LocalDate.now());
 		pedido.setDataEntrega(LocalDate.now().plusDays(15));
-		
-		pedidoService.update(pedido.getId(), pedido);
-		
-//		--------------- // fim atualiza pedido // ---------------
 
+		pedidoService.update(pedido.getId(), pedido);
+
+//		--------------- // fim atualiza pedido // ---------------
 
 		return entity;
 	}
