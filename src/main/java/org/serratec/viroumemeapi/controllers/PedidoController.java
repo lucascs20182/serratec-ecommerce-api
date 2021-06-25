@@ -1,12 +1,10 @@
 package org.serratec.viroumemeapi.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.mail.MessagingException;
 
 import org.serratec.viroumemeapi.dtos.PedidoDTOResponse;
-import org.serratec.viroumemeapi.entities.PedidoEntity;
 import org.serratec.viroumemeapi.exceptions.CpfNotEditableException;
 import org.serratec.viroumemeapi.exceptions.ItemNotFoundException;
 import org.serratec.viroumemeapi.exceptions.ProductStockLessThanRequestedException;
@@ -36,21 +34,14 @@ public class PedidoController {
 
 	@GetMapping
 	public ResponseEntity<List<PedidoDTOResponse>> getAll() {
-		List<PedidoDTOResponse> listaPedidosResponse = new ArrayList<PedidoDTOResponse>();
-
-		for (PedidoEntity pedido : service.getAll()) {
-			listaPedidosResponse.add(mapper.toDto(pedido));
-		}
-
-		return new ResponseEntity<List<PedidoDTOResponse>>(listaPedidosResponse, HttpStatus.OK);
+		return new ResponseEntity<List<PedidoDTOResponse>>(service.getAll(), HttpStatus.OK);
 	}
 
-//	@GetMapping("/{id}")
-//	public ResponseEntity<PedidoDTOResponse> getById(@PathVariable Long id) throws ItemNotFoundException {
-//		PedidoDTOResponse pedidoResponse = mapper.toDto(service.getById(id));
-//
-//		return new ResponseEntity<PedidoDTOResponse>(pedidoResponse, HttpStatus.OK);
-//	}
+	@GetMapping("/{id}")
+	public ResponseEntity<PedidoDTOResponse> getById(@PathVariable Long id) throws ItemNotFoundException {
+
+		return new ResponseEntity<PedidoDTOResponse>(service.findById(id), HttpStatus.OK);
+	}
 
 	@GetMapping("busca")
 	public ResponseEntity<PedidoDTOResponse> getByNumeroPedido(@RequestParam String numero)

@@ -1,6 +1,7 @@
 package org.serratec.viroumemeapi.services;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,6 +9,7 @@ import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 
 import org.serratec.viroumemeapi.config.EmailConfig;
+import org.serratec.viroumemeapi.dtos.PedidoDTOResponse;
 import org.serratec.viroumemeapi.entities.DetalhesPedidoEntity;
 import org.serratec.viroumemeapi.entities.PedidoEntity;
 import org.serratec.viroumemeapi.entities.ProdutoEntity;
@@ -45,8 +47,15 @@ public class PedidoService {
 	@Autowired
 	EmailConfig mailConfig;
 
-	public List<PedidoEntity> getAll() {
-		return pedidoRepository.findAll();
+	@Transactional
+	public List<PedidoDTOResponse> getAll() {
+		List<PedidoDTOResponse> listaPedidoResponse = new ArrayList<PedidoDTOResponse>();
+
+		for (PedidoEntity pedido : pedidoRepository.findAll()) {
+			listaPedidoResponse.add(pedidoMapper.toDto(pedido));
+		}
+
+		return listaPedidoResponse;
 	}
 
 	public PedidoEntity getById(Long id) throws ItemNotFoundException {
@@ -57,6 +66,18 @@ public class PedidoService {
 		}
 
 		return pedido.get();
+	}
+
+	// rota pro controller
+	@Transactional
+	public PedidoDTOResponse findById(Long id) throws ItemNotFoundException {
+		Optional<PedidoEntity> pedido = pedidoRepository.findById(id);
+
+		if (pedido.isEmpty()) {
+			throw new ItemNotFoundException("Não existe pedido com esse Id.");
+		}
+
+		return pedidoMapper.toDto(pedido.get());
 	}
 
 	public PedidoEntity getByNumeroPedido(String numeroPedido) throws ItemNotFoundException {

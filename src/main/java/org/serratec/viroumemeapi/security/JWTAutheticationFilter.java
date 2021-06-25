@@ -49,17 +49,13 @@ public class JWTAutheticationFilter extends UsernamePasswordAuthenticationFilter
 		String username = ((UserSS) auth.getPrincipal()).getUsername();
 		String token = jwtUtil.generateToken(username);
 		String id = ((UserSS) auth.getPrincipal()).getId().toString();
-		
+
 //		response.addHeader("Authorization", "Bearer " + token);
 
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(
-			"{" 
-				+ "\"" + "Authorization" + "\"" + ":" + "\"" + "Bearer " + token + "\"" + ","
-				+ "\"" + "idUsuario" + "\"" + ":" + "\"" + id + "\"" +
-			"}"
-		);
+		response.getWriter().write("{" + "\"" + "Authorization" + "\"" + ":" + "\"" + "Bearer " + token + "\"" + ","
+				+ "\"" + "idUsuario" + "\"" + ":" + "\"" + id + "\"" + "}");
 	}
 
 }
