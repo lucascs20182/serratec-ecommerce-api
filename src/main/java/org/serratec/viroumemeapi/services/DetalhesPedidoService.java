@@ -66,34 +66,31 @@ public class DetalhesPedidoService {
 			throw new ItemNotFoundException("Componentes de Pedido finalizado não podem ser alterados.");
 		}
 
-		// verifica se já existe produto cadastrado no pedido
-		Set<Long> idsDosProdutosNoPedido = new HashSet<Long>();
+		Boolean editado = false;
+		
 
 		if (pedido.getProdutosDoPedido() != null) {
-			Boolean isNotRepeated;
-
+			
 			for (DetalhesPedidoEntity detalhesPedido : pedido.getProdutosDoPedido()) {
-				isNotRepeated = idsDosProdutosNoPedido.add(detalhesPedido.getProduto().getId());
-
-				if (!isNotRepeated) {
-					// a mesclagem deveria ser feita automaticamente
-					// depois testar se a linha de baixo funciona
-//					detalhesPedido.setQuantidade(detalhesPedido.getQuantidade() + dto.getQuantidade()); // produto repetido
-
-					throw new ItemAlreadyExistsException("Produto já existente no pedido.");
+				
+				if(dto.getIdProduto() == detalhesPedido.getProduto().getId()) {
+					detalhesPedido.setQuantidade(dto.getQuantidade());
+					
+					entity = detalhesPedidoRepository.save(detalhesPedido);
+					
+					editado = true;
 				}
-			}
-
-			isNotRepeated = idsDosProdutosNoPedido.add(dto.getIdProduto());
-
-			if (!isNotRepeated) {
-				// a mesclagem deveria ser feita automaticamente
-				throw new ItemAlreadyExistsException("Produto já existente no pedido.");
+				
+				
+				
 			}
 		}
 
-		entity = detalhesPedidoRepository.save(entity);
-
+		if(!editado) {
+			entity = detalhesPedidoRepository.save(entity);
+		}
+		
+		
 //		--------------- // atualiza pedido // ---------------
 		List<DetalhesPedidoEntity> itemDoPedido = pedido.getProdutosDoPedido();
 		itemDoPedido.add(entity);
