@@ -1,10 +1,10 @@
 package org.serratec.viroumemeapi.services;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+
+import javax.transaction.Transactional;
 
 import org.serratec.viroumemeapi.dtos.DetalhesPedidoDTORequest;
 import org.serratec.viroumemeapi.entities.ClienteEntity;
@@ -52,6 +52,7 @@ public class DetalhesPedidoService {
 		return pedido.get();
 	}
 
+	@Transactional
 	public DetalhesPedidoEntity create(DetalhesPedidoDTORequest dto) throws ItemNotFoundException,
 			ProductStockLessThanRequestedException, QuantityCannotBeZeroException, ItemAlreadyExistsException {
 
