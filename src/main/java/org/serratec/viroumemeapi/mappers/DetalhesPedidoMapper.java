@@ -20,6 +20,9 @@ public class DetalhesPedidoMapper {
 
 	@Autowired
 	ProdutoService produtoService;
+	
+	@Autowired
+	ProdutoMapper produtoMapper;
 
 	@Autowired
 	ClienteService clienteService;
@@ -70,6 +73,7 @@ public class DetalhesPedidoMapper {
 		dto.setId(entity.getId());
 		dto.setIdPedido(entity.getPedido().getId());
 		dto.setIdProduto(entity.getProduto().getId());
+		dto.setProduto(produtoMapper.toDto(entity.getProduto()));
 		dto.setPrecoDoProduto(entity.getPreco());
 		dto.setQuantidadeProdutos(entity.getQuantidade());
 

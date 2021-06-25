@@ -7,6 +7,8 @@ public class DetalhesPedidoDTOResponse {
 	private Long idPedido;
 
 	private Long idProduto;
+	
+	ProdutoDTOResponse produto;
 
 	private Integer quantidadeProdutos;
 
@@ -26,6 +28,14 @@ public class DetalhesPedidoDTOResponse {
 
 	public void setIdProduto(Long idProduto) {
 		this.idProduto = idProduto;
+	}
+
+	public ProdutoDTOResponse getProduto() {
+		return produto;
+	}
+
+	public void setProduto(ProdutoDTOResponse produto) {
+		this.produto = produto;
 	}
 
 	public Long getIdPedido() {
